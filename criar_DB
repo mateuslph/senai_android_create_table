@@ -1,0 +1,51 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema senai_compras
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema senai_compras
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `senai_compras` DEFAULT CHARACTER SET utf8 ;
+USE `senai_compras` ;
+
+-- -----------------------------------------------------
+-- Table `senai_compras`.`estoque`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `senai_compras`.`estoque` (
+  `id_produto` INT NOT NULL,
+  `produto` VARCHAR(100) NULL,
+  `preco` DOUBLE NULL,
+  `quantidade` DOUBLE NULL,
+  `unidade` VARCHAR(45) NULL,
+  PRIMARY KEY (`id_produto`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `senai_compras`.`vendas`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `senai_compras`.`vendas` (
+  `id_venda` INT NOT NULL,
+  `tipo_de_venda` VARCHAR(80) NULL,
+  `taxa` DOUBLE NULL,
+  `data_da_venda` DATE NULL,
+  `estoque_id_produto` INT NOT NULL,
+  PRIMARY KEY (`id_venda`, `estoque_id_produto`),
+  INDEX `fk_vendas_estoque_idx` (`estoque_id_produto` ASC) VISIBLE,
+  CONSTRAINT `fk_vendas_estoque`
+    FOREIGN KEY (`estoque_id_produto`)
+    REFERENCES `senai_compras`.`estoque` (`id_produto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
